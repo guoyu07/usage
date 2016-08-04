@@ -55,7 +55,7 @@ class usage_bo extends so_sql
 	 */
 	public function receive()
 	{
-		$submitted = $_POST['exec'];
+		$submitted = isset($_POST['exec']) ? $_POST['exec'] : $_POST;
 		unset($submitted['postpone']);
 		unset($submitted['submit']);
 
@@ -107,8 +107,31 @@ class usage_bo extends so_sql
 	 */
 	public function acknowledge()
 	{
-		return '<p>'.lang('Thank you for contributing to EGroupware usage statistic.')."</p>\n".
+		$html = '<p><b>'.lang('Thank you for contributing to EGroupware usage statistic.')."</b></p>\n".
 			'<p>'.lang('Your submission is number %1.',$this->data['usage_id'])."</p>\n";
+
+		// check if user is eligible to free groups app
+		if ($this->data['usage_submit_id'] && substr($this->data['usage_version'], 0, 3) != 'EPL' &&
+			($data = $this->db->query('SELECT * FROM community_user WHERE user='.
+				$this->db->quote($this->data['usage_submit_id']), __LINE__, __FILE__)->fetch()))
+		{
+			$html .= '<pre>'.lang('As (former) user of EGroupware 1.8 community edition your are eligible to use our free group adminstration app.')."\n\n";
+			$html .= lang('To do so, you need to follow %1this instructions%2 and note following credentials',
+				'<a href="https://github.com/EGroupware/egroupware/wiki/Group-administration-for-long-time-CE-users" target="_blank">', '</a>')."\n".
+				'<ul><li>'.lang('Username').': '.htmlspecialchars($data['user'])."</li>".
+				'<li>'.lang('Password').': '.htmlspecialchars($data['passwd'])."</li></ul>";
+			$html .= "</pre>\n";
+
+			// check and if not add user to downlaod server user list
+			if (!$this->db->query('SELECT COUNT(*) FROM download_users WHERE user='.
+				$this->db->quote($data['user']), __LINE__, __FILE__)->fetchColumn())
+			{
+				$this->db->query('INSERT INTO download_users (user,passwd,expire,group_name) VALUES ('.
+					$this->db->quote($data['user']).',ENCRYPT('.
+						$this->db->quote($data['passwd'])."),NULL,'community')", __LINE__, __FILE__);
+			}
+		}
+		return $html;
 	}
 
 	/**
@@ -165,6 +188,7 @@ class usage_bo extends so_sql
 		$sel_options['usage_install_type'] = array(
 			'archive' => lang('Archive: zip or tar'),
 			'package' => lang('RPM or Debian package'),
+			'git'     => lang('Git clone'),
 			'svn'     => lang('Subversion checkout'),
 			'other'   => lang('Other'),
 		);

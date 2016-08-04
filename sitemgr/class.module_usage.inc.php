@@ -41,7 +41,7 @@ class module_usage extends Module
 		try
 		{
 			$usage = new usage_bo();
-			if (isset($_POST['exec']))
+			if (isset($_POST['exec']) || isset($_POST['usage_type']))
 			{
 				$content = $usage->receive();
 			}

@@ -18,7 +18,7 @@ $setup_info['usage']['enable']    = 1;
 $setup_info['usage']['author'][] = $setup_info['usage']['maintainer'][] = array(
 	'name'  => 'Ralf Becker',
 	'email' => 'ralfbecker@outdoor-training.de',
-	'url'   => 'www.stylite.de'
+	'url'   => 'www.egroupware.org'
 );
 
 $setup_info['usage']['license']  = 'GPL';
@@ -29,6 +29,6 @@ $setup_info['usage']['hooks'] = array();
 
 /* Dependencies for this app to work */
 $setup_info['usage']['depends'][] = array(
-	'appname' => 'phpgwapi',
-	'versions' => Array('1.9','14.1')
+	'appname' => 'api',
+	'versions' => Array('16.1')
 );

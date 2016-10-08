@@ -1,6 +1,6 @@
 <?php
 /**
- * eGroupWare - Setup
+ * EGroupware - Setup
  * http://www.egroupware.org
  * Created by eTemplates DB-Tools written by ralfbecker@outdoor-training.de
  *
@@ -14,4 +14,9 @@
 function tracker_upgrade1_7_001()
 {
 	return $GLOBALS['setup_info']['usage']['currentver'] = '14.1';
+}
+
+function tracker_upgrade14_1()
+{
+	return $GLOBALS['setup_info']['usage']['currentver'] = '16.1';
 }

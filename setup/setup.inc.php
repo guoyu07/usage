@@ -10,7 +10,7 @@
  */
 
 $setup_info['usage']['name']      = 'usage';
-$setup_info['usage']['version']   = '14.1';
+$setup_info['usage']['version']   = '16.1';
 $setup_info['usage']['app_order'] = 1;
 $setup_info['usage']['tables']    = array('egw_usage','egw_usage_apps');
 $setup_info['usage']['enable']    = 1;

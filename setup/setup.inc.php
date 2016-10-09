@@ -9,6 +9,9 @@
  * @version $Id$
  */
 
+// RB: do NOT install by default, only via setup
+$setup_info['usage']['only_db'] = array('never');
+
 $setup_info['usage']['name']      = 'usage';
 $setup_info['usage']['version']   = '16.1';
 $setup_info['usage']['app_order'] = 1;
